@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Prisma migration history
+prisma/migrations/
+
+# Local SQLite database (if any)
+dev.db
+
+# TypeScript build output
+dist/

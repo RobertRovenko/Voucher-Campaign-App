@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Campaign {
+  id        String    @id @default(uuid())
+  prefix    String
+  amount    Float
+  currency  String
+  validFrom DateTime
+  validTo   DateTime
+  vouchers  Voucher[]
+}
+
+model Voucher {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+}
