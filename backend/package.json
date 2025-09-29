@@ -14,11 +14,13 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.16.2",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "json2csv": "^5.0.7",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/json2csv": "^5.0.7",
     "@types/node": "^24.5.2",
