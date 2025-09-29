@@ -1,3 +1,16 @@
-node_modules
+# dependencies
 /frontend/node_modules
 /backend/node_modules
+/node_modules
+
+# build outputs
+/frontend/.next
+/frontend/out
+/frontend/dist
+/backend/dist
+/backend/build
+
+# misc
+.env
+.DS_Store
+*.log
