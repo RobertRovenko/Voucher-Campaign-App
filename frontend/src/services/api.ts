@@ -19,10 +19,22 @@ export async function deleteCampaign(id: string) {
   await fetch(`${API_URL}/campaigns/${id}`, { method: "DELETE" });
 }
 
-export async function getVouchers(campaignId: string, limit = 50) {
-    const res = await fetch(`${API_URL}/campaigns/${campaignId}/vouchers?limit=${limit}`);
-    return res.json();
+export async function getVouchers(
+  campaignId: string,
+  page = 1,
+  limit = 50
+) {
+  const res = await fetch(
+    `${API_URL}/campaigns/${campaignId}/vouchers?page=${page}&limit=${limit}`
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch vouchers (status: ${res.status})`);
   }
+
+  return res.json(); // should be { data: Voucher[], total: number }
+}
+
   
 
 export async function createVouchers(campaignId: string, count: number) {
@@ -74,3 +86,17 @@ export function createVouchersStream(
     return evtSource;
   }
   
+  // Delete a single voucher
+export async function deleteVoucher(voucherId: string) {
+  const res = await fetch(`${API_URL}/vouchers/${voucherId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || "Failed to delete voucher");
+  }
+
+  return res.json();
+}
+

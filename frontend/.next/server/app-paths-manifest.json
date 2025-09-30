@@ -1,5 +1,5 @@
 {
-  "/campaigns/create/page": "app/campaigns/create/page.js",
   "/page": "app/page.js",
-  "/campaigns/[id]/page": "app/campaigns/[id]/page.js"
+  "/campaigns/[id]/page": "app/campaigns/[id]/page.js",
+  "/campaigns/create/page": "app/campaigns/create/page.js"
 }

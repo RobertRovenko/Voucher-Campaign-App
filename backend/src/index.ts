@@ -101,7 +101,7 @@ app.get("/campaigns", async (req, res) => {
 // ========================
 // List vouchers in a campaign
 // ========================
-app.get("/campaigns/:id/vouchers", async (req, res) => {
+/* app.get("/campaigns/:id/vouchers", async (req, res) => {
   try {
     const campaignId = req.params.id;
     const vouchers = await prisma.voucher.findMany({ where: { campaignId } });
@@ -110,7 +110,34 @@ app.get("/campaigns/:id/vouchers", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch vouchers" });
   }
+}); */
+// ========================
+// List vouchers in a campaign (with pagination)
+// ========================
+app.get("/campaigns/:id/vouchers", async (req, res) => {
+  try {
+    const campaignId = req.params.id;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.voucher.findMany({
+        where: { campaignId },
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" }, // newest first
+      }),
+      prisma.voucher.count({ where: { campaignId } }),
+    ]);
+
+    res.json({ data, total, page, limit });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch vouchers" });
+  }
 });
+
 
 // ========================
 // Delete a campaign
@@ -187,6 +214,37 @@ app.get("/campaigns/:id/vouchers/stream", async (req, res) => {
   res.write(`data: ${JSON.stringify({ done: true, totalCreated: createdTotal })}\n\n`);
   res.end();
 });
+
+// ========================
+// Delete a voucher
+// ========================
+app.delete("/vouchers/:id", async (req, res) => {
+  try {
+    const voucherId = req.params.id;
+
+    const deleted = await prisma.voucher.delete({
+      where: { id: voucherId },
+    });
+
+    res.json({ message: "Voucher deleted", voucher: deleted });
+  } catch (error: unknown) {
+    console.error(error);
+
+    // Narrow the type
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as any).code === "P2025"
+    ) {
+      return res.status(404).json({ error: "Voucher not found" });
+    }
+
+    res.status(500).json({ error: "Failed to delete voucher" });
+  }
+});
+
+
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
