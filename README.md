@@ -35,7 +35,7 @@ A modern web application for managing voucher campaigns. Built with **Next.js, R
 
 ### 1. Clone the repository
 
-git clone https://github.com/yourusername/voucher-app.git
+git clone https://github.com/RobertRovenko/Voucher-Campaign-App.git
 cd voucher-app
 
 2. Create a .env file in /backend
