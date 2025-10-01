@@ -3,9 +3,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 model Campaign {
@@ -23,4 +23,5 @@ model Voucher {
   code       String   @unique
   campaignId String
   campaign   Campaign @relation(fields: [campaignId], references: [id])
+  createdAt DateTime @default(now()) 
 }

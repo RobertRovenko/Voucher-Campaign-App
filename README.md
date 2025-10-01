@@ -42,8 +42,22 @@ cd voucher-app
 
 Example:
 
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/voucher_db?schema=public"
+**DATABASE_URL="postgresql://postgres:postgres@localhost:5432/voucher_db?schema=public"**
+**PORT=4000**
+
+Note: If you want to run the backend directly on your host (outside Docker), change the hostname to localhost:
+
+DATABASE_URL="postgresql://postgres:postgres@postgres:5432/voucher_db?schema=public"
 PORT=4000
+
+3. Run npm install
+   Install the necessary dependencies in both the backend and frontend folders:
+
+cd backend
+npm install
+
+cd frontend
+npm install
 
 ## Running the Project
 
@@ -53,11 +67,15 @@ docker-compose up -d
 
 This starts both the backend server and a PostgreSQL database.
 
-2. **Optionally open Prisma Studio for a database interface (Backend)**
+2. **Run Prisma migrations and optionally open Prisma Studio**
+
+docker compose run backend npx prisma migrate dev --name init
 
 docker-compose exec backend npx prisma studio
 
 3. **Start the frontend development server (Frontend)**
+
+cd frontend
 
 npm run dev
 
@@ -87,7 +105,7 @@ docker-compose exec backend npm run dev
 
 docker-compose exec backend npx prisma studio
 
-#Scripts
+# Scripts
 
 **Create 100.000 vouchers:**
 

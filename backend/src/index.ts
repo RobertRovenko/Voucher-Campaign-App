@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { Parser } from "json2csv"; // for CSV download
-import cors from "cors"; // <-- import CORS
+import cors from "cors"; 
 
 const app = express();
 const prisma = new PrismaClient();
@@ -98,19 +98,6 @@ app.get("/campaigns", async (req, res) => {
   }
 });
 
-// ========================
-// List vouchers in a campaign
-// ========================
-/* app.get("/campaigns/:id/vouchers", async (req, res) => {
-  try {
-    const campaignId = req.params.id;
-    const vouchers = await prisma.voucher.findMany({ where: { campaignId } });
-    res.json(vouchers);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch vouchers" });
-  }
-}); */
 // ========================
 // List vouchers in a campaign (with pagination)
 // ========================
@@ -246,5 +233,8 @@ app.delete("/vouchers/:id", async (req, res) => {
 
 
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+const PORT = parseInt(process.env.PORT || "4000", 10);
+
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`)
+);
